@@ -8,9 +8,11 @@ import Posts from './components/Posts';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import './css/main.css';
+
 const App = () => {
   return (
-    <div className='App'>
+    <div className='page-center'>
       <Router>
         <Nav />
 
