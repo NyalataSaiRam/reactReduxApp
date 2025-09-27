@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { create, update } from '../features/posts/postSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPostThunk, updatePostThunk } from '../features/posts/postSlice';
 import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ function PostForm({ post = null }) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { status, error } = useSelector(state => state.posts);
 
     const FormInitialData = {
         id: post?.id || "",
@@ -36,7 +37,7 @@ function PostForm({ post = null }) {
                 description: formData.description,
                 author: formData.author
             };
-            dispatch(update(updatePost));
+            dispatch(updatePostThunk(updatePost));
             navigate("/");
 
         } else {
@@ -47,21 +48,31 @@ function PostForm({ post = null }) {
                 description: formData.description,
                 author: formData.author
             };
-            dispatch(create(newPost));
+            // dispatch(create(newPost));
+            dispatch(createPostThunk(newPost));
             setFormData(FormInitialData);
         }
 
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name='name' value={formData.name} onChange={handleChange} />
-            <input type="text" name='description' value={formData.description} onChange={handleChange} />
-            <input type="text" name='author' value={formData.author} onChange={handleChange} />
-            <button >{
-                post ? "update" : "create"
-            }</button>
-        </form>
+        <div>
+
+            <form onSubmit={handleSubmit}>
+                <input type="text" name='name' value={formData.name} onChange={handleChange} />
+                <input type="text" name='description' value={formData.description} onChange={handleChange} />
+                <input type="text" name='author' value={formData.author} onChange={handleChange} />
+                <button >{
+                    post ? "update" : "create"
+                }</button>
+            </form>
+            {
+                status === "failed" &&
+                <div>
+                    {error}
+                </div>
+            }
+        </div>
     );
 }
 
