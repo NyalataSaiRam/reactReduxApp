@@ -9,21 +9,25 @@ import Posts from './components/Posts';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './css/main.css';
+import PostForm from './components/PostForm';
+import EditPost from './components/EditPost';
 
 const App = () => {
   return (
     <div className='page-center'>
       <Router>
+
         <Nav />
 
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route exact path='about' element={<About />} />
           <Route exact path='contact' element={<Contact />} />
-          <Route exact path='posts' element={<Posts />} >
-            <Route path='postList' element={<PostList />} />
-          </Route >
+          <Route path='postList' element={<PostList />} />
+          <Route path='postForm' element={<PostForm />} />
+          <Route path='editpost/:postId' element={<EditPost />} />
         </Routes >
+
       </Router >
     </div>
   );
